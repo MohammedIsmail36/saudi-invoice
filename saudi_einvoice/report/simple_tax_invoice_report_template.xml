@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="simple_tax_invoice_report_temp">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <link rel="stylesheet" href="/saudi_einvoice/static/src/css/style.css"/>
+                         <h3 class="invoice-title"><span> Simplified Tax Invoice </span>
+                            <br/> <span class="arabic"> فاتورة ضريبية مبسطة </span>
+                         </h3>
+                        <div style="height: 120px;">
+                            <!-- Start Invoice Info -->
+                            <div style="float: left; width: 80%; margin-top:30px; direction: ltr;">
+                                <div>
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="td-left" width="30%"><span>Number Invoice</span></td>
+                                            <td class="td-center" width="35%"><span t-field="o.name"/></td>
+                                            <td class="td-right" width="35%"><span class="arabic">رقم الفاتورة</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td-left"><span>Date Issue Invoice</span></td>
+                                            <td class="td-center"><span t-field="o.invoice_date"/></td>
+                                            <td class="td-right"><span class="arabic">تاريخ اصدار الفاتورة</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td-left"><span>Date Of Supply</span></td>
+                                            <td class="td-center"><span t-field="o.invoice_date_supply"/></td>
+                                            <td class="td-right"><span class="arabic">تاريخ التوريد</span></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- Div QR Code -->
+                            <div class="main_qrcode" style="">
+                                <div class="qrcode">
+                                    <img t-if="o.get_qr_code()" style="display:block;" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', o.get_qr_code(), 120, 120)"/>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Div Clear -->
+                        <div style="clear: left; height: 10px;"></div>
+                        <!-- Start Invoice Line -->
+                        <div style="margin-top: 10px;">
+                            <table width="100%">
+                                <thead>
+                                    <tr class="tr-header">
+                                        <td class="title-invoice-line">Description<br/><span class="arabic">تفاصيل السلع أو الخدمات</span></td>
+                                        <td class="title-invoice-line">Unit Price<br/><span class="arabic">سعر الوحدة</span></td>
+                                        <td class="title-invoice-line">Quantity<br/><span class="arabic">الكمية</span></td>
+                                        <td class="title-invoice-line">Total(incl.vat)<br/><span class="arabic">المجموع (شامل الضريبة)</span></td>
+                                    </tr>
+                                </thead>
+                                <tbody class="invoice_tbody">
+                                    <tr t-foreach="o.invoice_line_ids" t-as="l">
+                                        <!-- #1# Description-->
+                                        <td>
+                                            <span t-field="l.name"/> -
+                                            <span class="text-right arabic" t-esc="o.get_product_arabic_name(l.product_id.id)"/>
+                                        </td>
+                                        <!-- #2# price_unit-->
+                                        <td class="text-center">
+                                            <span t-field="l.price_unit"
+                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                        <!-- #3# quantity-->
+                                        <td class="text-center">
+                                            <span t-esc="'%.2f'%(l.quantity)"/>
+                                        </td>
+                                        <!-- #8# Total Amount Incl Vat ==> From Odoo Default -->
+                                        <td class="text-center o_price_total">
+                                            <span class="text-nowrap" t-field="l.price_total"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- End Invoice Line -->
+                        <!-- Div Clear -->
+                        <div style="clear: left; height: 10px;"></div>
+                        <!-- Start Sums -->
+                        <div>
+                            <table style="width:100%;">
+						        <thead>
+                                    <tr>
+                                        <td class="td-left" width="32%">Total - Excluding VAT</td>
+                                        <td class="td-right arabic" width="53%">الإجمالي - غير شامل ضريبة القيمة المضافة</td>
+                                        <td class="td-center" width="15%"><span t-esc="o.amount_sale_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td-left">Discount</td>
+                                        <td class="td-right arabic">مجموع الخصم</td>
+                                        <td class="td-center"><span t-esc="o.discount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td-left">Total Taxable Amount - Excluding VAT</td>
+                                        <td class="td-right arabic">إجمالي المبلغ الخاضع للضريبة - غير شامل ضريبة القيمة المضافة</td>
+                                        <td class="td-center"><span t-esc="o.amount_untaxed" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td-left">Total VAT</td>
+                                        <td class="td-right arabic">إجمالي ضريبة القيمة المضافة</td>
+                                        <td class="td-center"><span t-esc="o.amount_tax" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td-left">Total Amount Due</td>
+                                        <td class="td-right arabic">إجمالي المبلغ المستحق</td>
+                                        <td class="td-center" style="font-weight: bold;background-color:#DCDCDC;">
+                                            <span class="text-nowrap" t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+						        </thead>
+					        </table>
+                        </div>
+                        <!-- Word Amount-->
+                        <div style="margin-top: 10px;">
+                            <table width="100%">
+                                <thead>
+                                    <tr>
+                                        <td class="td-center" width="20%" style="font-weight: bold;background-color:#DCDCDC;">AMOUNT
+                                            INVOICED
+                                        </td>
+                                        <td class="td-center arabic" width="80%">
+                                            <span t-esc="o.amount_word(o.amount_total)"/>
+                                        </td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

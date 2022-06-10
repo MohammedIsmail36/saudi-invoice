@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--
+        =========================
+        ==== Form ====
+        =========================
+        -->
+        <record id="view_manage_address_form" model="ir.ui.view">
+            <field name="name">manage.address.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='street2']" position="after">
+                    <field name="district_id"
+                           placeholder="District"
+                           options='{"no_open": True}'
+                           class="o_address_street"
+                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+
+                    <field name="city_id"
+                           placeholder="City"
+                           class="o_address_city"
+                           options='{"no_open": True}'
+                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                </xpath>
+                <field name="city" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <xpath expr="//field[@name='country_id']" position="after">
+                    <div>
+                        <field name="building_no" placeholder="Building No" class="o_address_city" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                        <field name="additional_no" placeholder="Additional No" class="o_address_city" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                     </div>
+                </xpath>
+
+                <xpath expr="//field[@name='vat']" position="before">
+                    <field name="other_id" placeholder="Other id" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                </xpath>
+            </field>
+        </record>
+         <!--
+        =========================
+        ==== Search ====
+        =========================
+        -->
+    </data>
+</odoo>

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_address_cities_user,access.address.cities,model_address_cities,base.group_user,1,1,1,1
+access_address_districts_user,access.address.districts,model_address_districts,base.group_user,1,1,1,1

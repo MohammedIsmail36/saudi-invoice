@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--
+        ======================
+        === Tree View ========
+        ======================
+        -->
+        <record id="view_address_cities_tree" model="ir.ui.view">
+            <field name="name">address.cities.tree</field>
+            <field name="model">address.cities</field>
+            <field name="arch" type="xml">
+                <tree string="Cities" editable="bottom">
+                    <field name="name"/>
+                    <field name="state_id" options="{'no_create':True, 'no_open': True}"/>
+                    <field name="country_id" options="{'no_create':True, 'no_open': True}"/>
+                </tree>
+            </field>
+        </record>
+        <!--
+        ======================
+        === Form View ========
+        ======================
+         -->
+<!--        <record id="view_address_cities_form" model="ir.ui.view">-->
+<!--            <field name="name">address.cities.form</field>-->
+<!--            <field name="model">address.cities</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form>-->
+<!--                    <sheet>-->
+<!--                        <group>-->
+<!--                            <group>-->
+<!--                                <field name="name"/>-->
+<!--                                <field name="state_id"/>-->
+<!--                                <field name="country_id"/>-->
+<!--                            </group>-->
+<!--                        </group>-->
+<!--                    </sheet>-->
+<!--                    <div class="o_attachment_preview"/>-->
+<!--                    <div class="oe_chatter">-->
+<!--                        <field name="message_follower_ids" widget="mail_followers"/>-->
+<!--                        <field name="activity_ids" widget="mail_activity"/>-->
+<!--                        <field name="message_ids" widget="mail_thread"/>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <!--
+        ===================
+        === Search View ===
+        ===================
+         -->
+        <record id="view_address_cities_search" model="ir.ui.view">
+            <field name="name">address.cities.search</field>
+            <field name="model">address.cities</field>
+            <field name="arch" type="xml">
+                <search string="City">
+                            <field name="name"/>
+                            <field name="state_id"/>
+                            <field name="country_id"/>
+                            <group string="Group By">
+                                <filter name="groupby_state" string="State" context="{'group_by': 'state_id'}"/>
+                                <filter name="groupby_country" string="Country" context="{'group_by': 'country_id'}"/>
+                            </group>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

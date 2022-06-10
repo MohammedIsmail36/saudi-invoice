@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="tax_invoice_report_temp">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <link rel="stylesheet" href="/saudi_einvoice/static/src/css/style.css"/>
+
+                        <h3 class="invoice-title"><span>Tax Invoice </span> - <span class="arabic">فاتورة ضريبية</span></h3>
+                        <div style="height: 120px;">
+                            <!-- Start Invoice Info -->
+                            <div style="float: left; width: 80%; margin-top:30px; direction: ltr;">
+                                <div>
+                                    <table width="100%">
+                                        <tr>
+                                            <td class="td-left" width="30%"><span>Number Invoice</span></td>
+                                            <td class="td-center" width="35%"><span t-field="o.name"/></td>
+                                            <td class="td-right" width="35%"><span class="arabic">رقم الفاتورة</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td-left"><span>Date Issue Invoice</span></td>
+                                            <td class="td-center"><span t-field="o.invoice_date"/></td>
+                                            <td class="td-right"><span class="arabic">تاريخ اصدار الفاتورة</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td-left"><span>Date Of Supply</span></td>
+                                            <td class="td-center"><span t-field="o.invoice_date_supply"/></td>
+                                            <td class="td-right"><span class="arabic">تاريخ التوريد</span></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- Div QR Code -->
+                            <div class="main_qrcode" style="">
+                                <div class="qrcode">
+                                    <img t-if="o.get_qr_code()" style="display:block;" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', o.get_qr_code(), 120, 120)"/>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Div Clear -->
+                        <div style="clear: left; height: 10px;"></div>
+                        <!-- Start Customer and Vendor Info -->
+                        <div style="direction: ltr;">
+                            <table width="100%">
+                                <!-- Table Header-->
+                                <thead>
+                                    <tr>
+                                        <td class="tr-header" colspan="3" width="49.5%">
+                                            <span>Buyer/</span><span class="arabic">العميل</span>
+                                        </td>
+                                        <td class="td-empty" width="1%"></td>
+                                        <td class="tr-header" colspan="3" width="49.5%">
+                                            <span>Seller/</span><span class="arabic">المورد</span>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <!-- rows -->
+                                <!-- Row 01-->
+                                <tbody class="invoice_tbody">
+                                    <tr>
+                                        <td class="td-left" width="12%"><span>Name</span></td>
+                                        <td class="td-center" width="24%"><span t-field="o.partner_id.name"/></td>
+                                        <td class="td-right" width="13.5%"><span class="arabic">الاسم</span></td>
+                                        <td class="td-empty" width="1%"></td>
+                                        <td class="td-left" width="12%"><span>Name</span></td>
+                                        <td class="td-center" width="24%"><span t-field="o.company_id.name"/></td>
+                                        <td class="td-right" width="13.5%"><span class="arabic">الاسم</span></td>
+                                    </tr>
+                                    <!-- Row 02-->
+                                    <tr>
+                                        <td class="td-left"><span>Building No</span></td>
+                                        <td class="td-center"><span t-field="o.partner_id.building_no"/></td>
+                                        <td class="td-right"><span class="arabic">رقم المبنى</span></td>
+                                        <td class="td-empty"></td>
+                                        <td class="td-left"><span>Building No</span></td>
+                                        <td class="td-center"><span t-field="o.company_id.building_no"/></td>
+                                        <td class="td-right"><span class="arabic">رقم المبنى</span></td>
+                                    </tr>
+                                    <!-- Row 03-->
+                                    <tr>
+                                        <td class="td-left" ><span>Street Name</span></td>
+                                        <td class="td-center"><span t-field="o.partner_id.street"/></td>
+                                        <td class="td-right"><span class="arabic">اسم الشارع </span></td>
+                                        <td class="td-empty"></td>
+                                        <td class="td-left"><span>Street Name</span></td>
+                                        <td class="td-center"><span t-field="o.company_id.street"/></td>
+                                        <td class="td-right"><span class="arabic">اسم الشارع </span></td>
+                                    </tr>
+                                    <!-- Row 04-->
+                                    <tr>
+                                        <td class="td-left" ><span>District</span></td>
+                                        <td class="td-center"><span t-field="o.partner_id.district_id.name"/> - <span t-field="o.company_id.city_id.name"/></td>
+                                        <td class="td-right"><span class="arabic">الحي </span></td>
+                                        <td class="td-empty"></td>
+                                        <td class="td-left"><span>District</span></td>
+                                        <td class="td-center"><span t-field="o.company_id.district_id.name"/> - <span t-field="o.company_id.city_id.name"/></td>
+                                        <td class="td-right"><span class="arabic">الحي </span></td>
+                                    </tr>
+                                    <!-- Row 05-->
+                                    <tr>
+                                        <td class="td-left" ><span>City</span></td>
+                                        <td class="td-center"><span t-field="o.partner_id.state_id.name"/> </td>
+                                        <td class="td-right"><span class="arabic">المدينة </span></td>
+                                        <td class="td-empty"></td>
+                                        <td class="td-left"><span>City</span></td>
+                                        <td class="td-center"><span t-field="o.partner_id.state_id.name"/> </td>
+                                        <td class="td-right"><span class="arabic">المدينة </span></td>
+                                    </tr>
+                                    <!-- Row 06-->
+                                    <tr>
+                                        <td class="td-left"><span>Country</span></td>
+                                        <td class="td-center"><span t-field="o.partner_id.country_id.name"/></td>
+                                        <td class="td-right"><span class="arabic">البلد </span></td>
+                                        <td class="td-empty"></td>
+                                        <td class="td-left"><span>Country</span></td>
+                                        <td class="td-center"><span t-field="o.company_id.country_id.name"/></td>
+                                        <td class="td-right"><span class="arabic">البلد </span></td>
+                                    </tr>
+                                    <!-- Row 07-->
+                                    <tr>
+                                        <td class="td-left"><span>Postal Code</span></td>
+                                        <td class="td-center"><span t-field="o.partner_id.zip"/></td>
+                                        <td class="td-right"><span class="arabic">الرمز البريدي </span></td>
+                                        <td class="td-empty"></td>
+                                        <td class="td-left"><span>Postal Code</span></td>
+                                        <td class="td-center"><span t-field="o.company_id.zip"/></td>
+                                        <td class="td-right"><span class="arabic">الرمز البريدي </span></td>
+                                    </tr>
+                                     <!-- Row 08-->
+                                    <tr>
+                                        <td class="td-left" ><span>Additional No</span></td>
+                                        <td class="td-center"><span t-field="o.partner_id.additional_no"/></td>
+                                        <td class="td-right"><span class="arabic">الرقم الاضافي  </span></td>
+                                        <td class="td-empty"></td>
+                                        <td class="td-left"><span>Additional No</span></td>
+                                        <td class="td-center"><span t-field="o.company_id.additional_no"/></td>
+                                        <td class="td-right"><span class="arabic">الرقم الاضافي </span></td>
+                                    </tr>
+                                      <!-- Row 09-->
+                                    <tr>
+                                        <td class="td-left"><span>Vat No</span></td>
+                                        <td class="td-center"><span t-field="o.partner_id.vat"/></td>
+                                        <td class="td-right"><span class="arabic">الرقم الضريبي</span></td>
+                                        <td class="td-empty"></td>
+                                        <td class="td-left"><span>Vat No</span></td>
+                                        <td class="td-center"><span t-field="o.company_id.vat"/></td>
+                                        <td class="td-right"><span class="arabic">الرقم الضريبي </span></td>
+                                    </tr>
+                                      <!-- Row 10-->
+                                    <tr>
+                                        <td class="td-left"><span>Other ID</span></td>
+                                        <td class="td-center"><span t-field="o.partner_id.other_id"/></td>
+                                        <td class="td-right"><span class="arabic">معرف اخر </span></td>
+                                        <td class="td-empty"></td>
+                                        <td class="td-left"><span>Other ID</span></td>
+                                        <td class="td-center"><span t-field="o.company_id.other_id"/></td>
+                                        <td class="td-right"><span class="arabic">معرف اخر </span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- End Customer and Vendor Info -->
+                        <!-- Start Invoice Line -->
+                        <div style="margin-top: 10px;">
+                            <table>
+                                <thead>
+                                    <tr class="tr-header">
+                                        <td class="title-invoice-line">Description<br/><span class="arabic">تفاصيل السلع أو الخدمات</span></td>
+                                        <td class="title-invoice-line">Unit Price<br/><span class="arabic">سعر الوحدة</span></td>
+                                        <td class="title-invoice-line">Quantity<br/><span class="arabic">الكمية</span></td>
+                                        <td class="title-invoice-line">Supply Amount<br/><span class="arabic">قيمة التوريد</span></td>
+                                        <td class="title-invoice-line">Discount<br/><span class="arabic">خصومات</span></td>
+                                        <td class="title-invoice-line">Tax Rate<br/><span class="arabic">نسبة الضريبة</span></td>
+                                        <td class="title-invoice-line">Tax Amount<br/><span class="arabic">مبلغ الضريبة</span></td>
+                                        <td class="title-invoice-line">Total(incl.vat)<br/><span class="arabic">المجموع (شامل الضريبة)</span></td>
+                                    </tr>
+                                </thead>
+                                <t t-set="total_incl_vat" t-value="0"/>
+                                <tbody class="invoice_tbody">
+                                    <tr t-foreach="o.invoice_line_ids" t-as="l">
+                                        <!-- #1# Description-->
+                                        <td>
+                                            <span t-field="l.name"/> -
+                                            <span class="text-right arabic" t-esc="o.get_product_arabic_name(l.product_id.id)"/>
+                                        </td>
+                                        <!-- #2# price_unit-->
+                                        <td class="text-center">
+                                            <span t-field="l.price_unit"
+                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                        <!-- #3# quantity-->
+                                        <td class="text-center">
+                                            <span t-esc="'%.2f'%(l.quantity)"/>
+                                        </td>
+                                        <!-- #4# Supply Amount -->
+                                        <td class="text-center">
+                                            <sapn t-esc="l.supply_amount"
+                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                        <!-- #5# discount-->
+                                        <td class="text-center"><span t-field="l.discount"/> %</td>
+                                        <!-- #6# Tax Rate ==> From Odoo Default -->
+                                        <td class="text-center">
+                                            <span t-out="', '.join(map(lambda x: (x.description or x.name), l.tax_ids))"
+                                                  id="line_tax_ids"/>
+                                            <span t-if="not l.tax_ids">0.0 %</span>
+                                        </td>
+                                        <!-- #7# Tax Amount ==> From Odoo Default-->
+                                        <td class="text-center">
+                                            <span class="text-nowrap" t-field="l.l10n_gcc_invoice_tax_amount"
+                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                        <!-- #8# Total Amount Incl Vat ==> From Odoo Default -->
+                                        <td class="text-center o_price_total">
+                                            <span class="text-nowrap" t-field="l.price_total"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- End Invoice Line -->
+                        <!-- Div Clear -->
+                        <div style="clear: left; height: 10px;"></div>
+                        <!-- Start Sums -->
+                        <div>
+                            <table style="width:100%;">
+						        <thead>
+                                    <tr>
+                                        <td class="td-left" width="32%">Total - Excluding VAT</td>
+                                        <td class="td-right arabic" width="53%">الإجمالي - غير شامل ضريبة القيمة المضافة</td>
+                                        <td class="td-center" width="15%"><span t-esc="o.amount_sale_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td-left">Discount</td>
+                                        <td class="td-right arabic">مجموع الخصم</td>
+                                        <td class="td-center"><span t-esc="o.discount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td-left">Total Taxable Amount - Excluding VAT</td>
+                                        <td class="td-right arabic">إجمالي المبلغ الخاضع للضريبة - غير شامل ضريبة القيمة المضافة</td>
+                                        <td class="td-center"><span t-esc="o.amount_untaxed" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td-left">Total VAT</td>
+                                        <td class="td-right arabic">إجمالي ضريبة القيمة المضافة</td>
+                                        <td class="td-center"><span t-esc="o.amount_tax" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td-left">Total Amount Due</td>
+                                        <td class="td-right arabic">إجمالي المبلغ المستحق</td>
+                                        <td class="td-center" style="font-weight: bold;background-color:#DCDCDC;">
+                                            <span class="text-nowrap" t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+						        </thead>
+					        </table>
+                        </div>
+                        <!-- Word Amount-->
+                        <div style="margin-top: 10px;">
+                            <table width="100%">
+                                <thead>
+                                    <tr>
+                                        <td class="td-center" width="20%" style="font-weight: bold;background-color:#DCDCDC;">AMOUNT
+                                            INVOICED
+                                        </td>
+                                        <td class="td-center arabic" width="80%">
+                                            <span t-esc="o.amount_word(o.amount_total)"/>
+                                        </td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,41 @@
+<odoo>
+  <data>
+
+    <!-- Cities -->
+    <record model="ir.actions.act_window" id="address_cities_action_window">
+        <field name="name">City</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">address.cities</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face"> Create New City </p>
+        </field>
+    </record>
+    <!-- Districts -->
+     <record model="ir.actions.act_window" id="address_districts_action_window">
+        <field name="name">District</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">address.districts</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face"> Create New District </p>
+        </field>
+    </record>
+
+
+
+    <!-- actions -->
+    <menuitem name="Cities"
+              id="cities_menu"
+              parent="contacts.menu_localisation"
+              action="address_cities_action_window"
+              sequence="4"/>
+
+    <menuitem name="District"
+              id="district_menu"
+              parent="contacts.menu_localisation"
+              action="address_districts_action_window"
+              sequence="5"/>
+
+  </data>
+</odoo>
